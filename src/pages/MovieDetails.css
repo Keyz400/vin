@@ -1,0 +1,73 @@
+/* Main container for movie details */
+.movie-details {
+  width: 100%;
+  min-height: 100vh; /* Full-screen height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  color: #fff;
+}
+
+/* Semi-transparent background for the content */
+.movie-content {
+  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay for readability */
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+  width: 100%; /* Ensure responsiveness */
+}
+
+/* Thumbnail image */
+.movie-thumbnail {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  margin: 0 auto 20px;
+  display: block;
+  object-fit: cover; /* Prevents image distortion */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Movie title styling */
+h1 {
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* General text styling */
+p {
+  margin: 5px 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+/* Download button */
+.download-btn {
+  margin-top: 20px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  background-color: #ff4500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #d93a00;
+}
