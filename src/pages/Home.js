@@ -53,7 +53,6 @@ const Home = () => {
 
   useEffect(() => {
     fetchMovies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, categories]);
 
   return (
