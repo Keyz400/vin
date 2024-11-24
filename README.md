@@ -1,70 +1,102 @@
-# Getting Started with Create React App
+# Vinjak Stream
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Vinjak Stream is a single-page movie listing and search web application that allows users to browse, search, and explore movie details. The app integrates with TMDB and YTS APIs to fetch movie information, images, and torrents.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Movie Categories**: Browse movies by different categories using dynamic buttons.
+- **Search Functionality**: Search for movies with auto-suggestions.
+- **Movie Grid View**: Displays movie posters in a responsive grid layout.
+- **GIF Logo**: Adds an animated GIF logo for branding.
+- **Light/Dark Mode**: A toggle button for switching between light and dark themes.
+- **Responsive Design**: Works seamlessly across all screen sizes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation and Usage
 
-### `npm test`
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/vinjak-stream.git
+cd vinjak-stream
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Setup Dependencies
 
-### `npm run build`
+Ensure you have a basic HTTP server installed (e.g., live-server, http-server, or use a local development environment like VS Code's Live Server extension).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Run the Application
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Open the index.html file in your browser, or start a simple server:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+npx live-server
 
-### `npm run eject`
+4. View in Browser
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The app will open in your default browser. If not, navigate to:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+http://127.0.0.1:8080
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+File Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+vinjak-stream/
+├── index.html           # Main HTML file
+├── css/
+│   └── Home.css         # CSS for styling the app
+├── js/
+│   └── app.js           # Main JavaScript for functionality
+├── assets/
+│   ├── logo.gif         # GIF logo for branding
+│   └── placeholder.png  # Placeholder image for movies
+├── README.md            # Project documentation
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+APIs Used
 
-### Analyzing the Bundle Size
+TMDB API: Fetch movie details, categories, and images.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+YTS API: Fetch torrent links for movies.
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Customization
 
-### Deployment
+You can modify the API keys or endpoints by updating the app.js file:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+const TMDB_API_KEY = 'your-tmdb-api-key';
+const YTS_API_URL = 'https://yts.mx/api/v2/';
 
-### `npm run build` fails to minify
+Replace the placeholder values with your API credentials.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+---
+
+License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+
+---
+
+Contributions
+
+Contributions are welcome! Please open an issue or submit a pull request for enhancements or bug fixes.
+
+
+---
+
+Author
+
+Developed by Your Name. For queries, reach out at your.email@example.com.
+
+**Instructions:**
+- Replace placeholders like `yourusername`, `your-tmdb-api-key`, and `your.email@example.com` with your actual GitHub username, TMDB API key, and contact email.
+- Save the file as `README.md` and include it in the project folder before uploading to GitHub.
