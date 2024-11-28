@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import './MovieDetails.css';
 
@@ -8,11 +8,7 @@ const MovieDetails = () => {
   const [torrentUrl, setTorrentUrl] = useState('');
   const [loadingTorrent, setLoadingTorrent] = useState(true);
 
-  useEffect(() => {
-    fetchMovieDetails();
-  }, []);
-
-  const fetchMovieDetails = async () => {
+  const fetchMovieDetails = useCallback(async () => {
     try {
       const res = await fetch(
         `https://api.themoviedb.org/3/movie/${id}?api_key=40ea9ffe294065bfde6d35980bd08736`
@@ -25,7 +21,7 @@ const MovieDetails = () => {
     } catch (error) {
       console.error('Error fetching movie details:', error);
     }
-  };
+  }, [id]); // Include id as a dependency
 
   const fetchTorrent = async (movieTitle) => {
     try {
@@ -46,6 +42,10 @@ const MovieDetails = () => {
       setLoadingTorrent(false);
     }
   };
+
+  useEffect(() => {
+    fetchMovieDetails();
+  }, [fetchMovieDetails]); // Correctly include fetchMovieDetails as a dependency
 
   return (
     <div
