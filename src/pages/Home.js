@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import "./Home.css";
 
 const Home = () => {
@@ -9,16 +8,14 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const scrollPosition = useRef(0);
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  const fetchMovies = async () => {
+  const fetchMovies = useCallback(async () => {
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/${categories}?api_key=40ea9ffe294065bfde6d35980bd08736&page=${page}`
     );
     const data = await response.json();
     setMovies((prevMovies) => [...prevMovies, ...data.results]);
-  };
+  }, [categories, page]);  // Include `categories` and `page` as dependencies
 
   const handleCategoryChange = (category) => {
     setCategories(category);
@@ -46,14 +43,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (location.state?.scrollPosition) {
-      window.scrollTo(0, location.state.scrollPosition);
-    }
-  }, [location.state]);
-
-  useEffect(() => {
     fetchMovies();
-  }, [page, categories]);
+  }, [page, categories, fetchMovies]);  // Now `fetchMovies` is included
 
   return (
     <div className="home-container">
@@ -103,27 +94,25 @@ const Home = () => {
         {suggestions.length > 0 && (
           <div className="suggestions">
             {suggestions.map((movie) => (
-              <Link
-                to={{
-                  pathname: `/movie/${movie.id}`,
-                  state: { scrollPosition: scrollPosition.current },
-                }}
+              <a
+                href={`/movie/${movie.id}`}
+                target="_blank"
+                rel="noreferrer noopener"
                 key={movie.id}
                 onClick={saveScrollPosition}
               >
                 {movie.title} ({movie.release_date?.slice(0, 4)})
-              </Link>
+              </a>
             ))}
           </div>
         )}
       </div>
       <div className="movies-grid">
         {movies.map((movie) => (
-          <Link
-            to={{
-              pathname: `/movie/${movie.id}`,
-              state: { scrollPosition: scrollPosition.current },
-            }}
+          <a
+            href={`/movie/${movie.id}`}
+            target="_blank"
+            rel="noreferrer noopener"
             key={movie.id}
             className="movie-card"
             onClick={saveScrollPosition}
@@ -133,7 +122,7 @@ const Home = () => {
               alt={movie.title}
             />
             <p className="movie-title">{movie.title}</p>
-          </Link>
+          </a>
         ))}
       </div>
       <button className="load-more" onClick={loadMoreMovies}>
