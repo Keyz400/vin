@@ -15,12 +15,14 @@ const Home = () => {
     );
     const data = await response.json();
     setMovies((prevMovies) => [...prevMovies, ...data.results]);
-  }, [categories, page]);  // Include `categories` and `page` as dependencies
+  }, [categories, page]);
 
   const handleCategoryChange = (category) => {
-    setCategories(category);
-    setPage(1);
-    setMovies([]);
+    if (categories !== category) {
+      setCategories(category);
+      setPage(1);
+      setMovies([]);
+    }
   };
 
   const handleSearch = async (e) => {
@@ -44,7 +46,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchMovies();
-  }, [page, categories, fetchMovies]);  // Now `fetchMovies` is included
+  }, [page, categories, fetchMovies]);
 
   return (
     <div className="home-container">
