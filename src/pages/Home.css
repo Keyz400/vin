@@ -19,7 +19,7 @@ body {
 }
 
 .gif-logo {
-  width: 150px; /* Fixed size */
+  width: 200px; /* Increased size */
   height: auto; /* Maintain aspect ratio */
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Optional shadow */
