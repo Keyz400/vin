@@ -4,19 +4,39 @@ import "./Home.css";
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
-  const [categories, setCategories] = useState("popular");
+  const [categories, setCategories] = useState("trending");
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const scrollPosition = useRef(0);
 
+  // Function to fetch movies data
   const fetchMovies = useCallback(async () => {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${categories}?api_key=40ea9ffe294065bfde6d35980bd08736&page=${page}`
-    );
+    let endpoint = `https://api.themoviedb.org/3/movie/${categories}?api_key=40ea9ffe294065bfde6d35980bd08736&page=${page}`;
+
+    if (categories === "trending") {
+      endpoint = `https://api.themoviedb.org/3/trending/movie/week?api_key=40ea9ffe294065bfde6d35980bd08736&page=${page}`;
+    }
+
+    const response = await fetch(endpoint);
     const data = await response.json();
-    setMovies((prevMovies) => [...prevMovies, ...data.results]);
+
+    let filteredMovies = data.results;
+
+    // Upcoming movies filtering: only future release dates
+    if (categories === "upcoming") {
+      const today = new Date().toISOString().split("T")[0];
+      filteredMovies = filteredMovies.filter(
+        (movie) => movie.release_date && movie.release_date >= today
+      );
+    }
+
+    // Set the movies based on category and page
+    setMovies((prevMovies) =>
+      page === 1 ? filteredMovies : [...prevMovies, ...filteredMovies]
+    );
   }, [categories, page]);
 
+  // Category button handler
   const handleCategoryChange = (category) => {
     if (categories !== category) {
       setCategories(category);
@@ -25,6 +45,7 @@ const Home = () => {
     }
   };
 
+  // Search movies handler
   const handleSearch = async (e) => {
     setSearchQuery(e.target.value);
     if (e.target.value.length >= 3) {
@@ -38,12 +59,14 @@ const Home = () => {
     }
   };
 
+  // Load more movies when scroll reaches bottom
   const loadMoreMovies = () => setPage((prevPage) => prevPage + 1);
 
   const saveScrollPosition = () => {
     scrollPosition.current = window.scrollY;
   };
 
+  // Fetch movies when page or category changes
   useEffect(() => {
     fetchMovies();
   }, [page, categories, fetchMovies]);
@@ -57,18 +80,20 @@ const Home = () => {
           className="gif-logo"
         />
       </div>
+
+      {/* Category Buttons */}
       <div className="category-buttons">
+        <button
+          onClick={() => handleCategoryChange("trending")}
+          className={categories === "trending" ? "active-category" : ""}
+        >
+          Trending
+        </button>
         <button
           onClick={() => handleCategoryChange("popular")}
           className={categories === "popular" ? "active-category" : ""}
         >
           Popular
-        </button>
-        <button
-          onClick={() => handleCategoryChange("top_rated")}
-          className={categories === "top_rated" ? "active-category" : ""}
-        >
-          Trending
         </button>
         <button
           onClick={() => handleCategoryChange("now_playing")}
@@ -86,6 +111,8 @@ const Home = () => {
           About
         </button>
       </div>
+
+      {/* Search Bar */}
       <div className="search-bar">
         <input
           type="text"
@@ -109,6 +136,8 @@ const Home = () => {
           </div>
         )}
       </div>
+
+      {/* Movies Grid */}
       <div className="movies-grid">
         {movies.map((movie) => (
           <a
@@ -127,6 +156,8 @@ const Home = () => {
           </a>
         ))}
       </div>
+
+      {/* Load More Button */}
       <button className="load-more" onClick={loadMoreMovies}>
         Load More
       </button>
