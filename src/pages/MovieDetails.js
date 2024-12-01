@@ -26,7 +26,7 @@ const MovieDetails = () => {
   const fetchTorrent = async (movieTitle) => {
     try {
       const res = await fetch(
-        `http://165.232.178.10:8080/api/yts/${encodeURIComponent(movieTitle)}`
+        `http://165.232.178.10:8080/api/glodls/${encodeURIComponent(movieTitle)}`
       );
       const data = await res.json();
 
