@@ -5,7 +5,7 @@ import './MovieDetails.css';
 const MovieDetails = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState({});
-  const [torrentUrl, setTorrentUrl] = useState('');
+  const [torrentData, setTorrentData] = useState([]);
   const [loadingTorrent, setLoadingTorrent] = useState(true);
 
   const fetchMovieDetails = useCallback(async () => {
@@ -16,28 +16,30 @@ const MovieDetails = () => {
       const data = await res.json();
       setMovie(data);
 
-      // Fetch torrent URL from YTS
+      // Fetch torrents from YTS API
       fetchTorrent(data.title || data.original_title);
     } catch (error) {
       console.error('Error fetching movie details:', error);
     }
-  }, [id]); // Include id as a dependency
+  }, [id]);
 
   const fetchTorrent = async (movieTitle) => {
     try {
       const res = await fetch(
-        `https://yts.mx/api/v2/list_movies.json?query_term=${movieTitle}`
+        `http://165.232.178.10:8080/api/yts/${encodeURIComponent(movieTitle)}`
       );
       const data = await res.json();
-      if (data.data.movies && data.data.movies[0].torrents) {
-        const torrentHash = data.data.movies[0].torrents[0].hash;
-        setTorrentUrl(`https://yts.mx/torrent/download/${torrentHash}`);
+
+      if (data && Array.isArray(data) && data.length > 0) {
+        // Process the data as it contains a list of torrents
+        const torrents = data[0].Files || [];
+        setTorrentData(torrents);
       } else {
-        setTorrentUrl(null);
+        setTorrentData([]);
       }
     } catch (error) {
-      console.error('Error fetching torrent:', error);
-      setTorrentUrl(null);
+      console.error('Error fetching torrents:', error);
+      setTorrentData([]);
     } finally {
       setLoadingTorrent(false);
     }
@@ -45,7 +47,7 @@ const MovieDetails = () => {
 
   useEffect(() => {
     fetchMovieDetails();
-  }, [fetchMovieDetails]); // Correctly include fetchMovieDetails as a dependency
+  }, [fetchMovieDetails]);
 
   return (
     <div
@@ -69,17 +71,25 @@ const MovieDetails = () => {
         <p>Release Date: {movie.release_date || 'N/A'}</p>
         <p>Genre: {movie.genres ? movie.genres.map((g) => g.name).join(', ') : 'N/A'}</p>
         <p>{movie.overview || 'No description available.'}</p>
+
+        <h2>Torrents</h2>
         {loadingTorrent ? (
-          <p>Loading torrent...</p>
-        ) : torrentUrl ? (
-          <button
-            className="download-btn"
-            onClick={() => window.open(torrentUrl, '_blank')}
-          >
-            Download Torrent
-          </button>
+          <p>Loading torrents...</p>
+        ) : torrentData.length > 0 ? (
+          torrentData.map((torrent, index) => (
+            <div key={index} className="torrent-info">
+              <h3>{torrent.Quality} - {torrent.Type}</h3>
+              <p>Size: {torrent.Size}</p>
+              <button
+                className="download-btn"
+                onClick={() => window.open(torrent.Magnet, '_blank')}
+              >
+                Download Magnet
+              </button>
+            </div>
+          ))
         ) : (
-          <p>No torrent available for this movie.</p>
+          <p>No torrents available for this movie.</p>
         )}
       </div>
     </div>
